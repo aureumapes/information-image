@@ -4,29 +4,27 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 )
 
 func ToImage(writeTo, file string) {
 	fileBytes, _ := os.ReadFile(file)
-	currColor := color.RGBA{
-		R: 0,
-		G: 0,
-		B: 0,
-		A: 255,
-	}
-	currX := 0
-	img := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{len(fileBytes), 1}})
+
+	width := int(math.Sqrt(float64(len(fileBytes))))
+	height := width + (len(fileBytes) - width*width)
+
+	img := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{width, height}})
+	currX := img.Bounds().Min.X
+	currY := img.Bounds().Min.Y
+
 	for _, textByte := range fileBytes {
-		currColor.R, currColor.G, currColor.B = textByte, textByte, textByte
-		img.Set(currX, 0, currColor)
-		currColor = color.RGBA{
-			R: 0,
-			G: 0,
-			B: 0,
-			A: 255,
-		}
+		img.Set(currX, currY, color.RGBA{textByte, textByte, textByte, 0xff})
 		currX++
+		if currX >= img.Bounds().Max.X {
+			currX = 0
+			currY++
+		}
 	}
 	f, _ := os.Create(writeTo)
 	png.Encode(f, img)

@@ -2,6 +2,7 @@ package internal
 
 import (
 	"bytes"
+	"image"
 	"image/png"
 	"os"
 )
@@ -11,21 +12,20 @@ func FromImage(writeFrom, file string) {
 	img, _ := png.Decode(bytes.NewReader(imageBytes))
 	fileBytes := []byte{}
 
-	currX := img.Bounds().Min.X
-	currY := img.Bounds().Min.Y
+	bytes := getBytes(img)
+	println(string(bytes))
 
-	for currY <= img.Bounds().Max.Y && currX <= img.Bounds().Max.X {
-		r, _, _, _ := img.At(currX, currY).RGBA()
-		fileBytes = append(fileBytes, byte(r))
-		currX++
-		if currX < img.Bounds().Min.X {
-			currY++
-			if currY < img.Bounds().Min.Y {
-				break
-			}
-			currX = img.Bounds().Max.X
-		}
-
-	}
 	print(string(fileBytes))
+}
+
+func getBytes(img image.Image) []byte {
+	var bytes []byte
+	height, width := img.Bounds().Max.X, img.Bounds().Max.Y
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			r, _, _, _ := img.At(x, y).RGBA()
+			bytes = append(bytes, byte(r))
+		}
+	}
+	return bytes
 }
