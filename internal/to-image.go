@@ -4,17 +4,13 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"math"
 	"os"
 )
 
 func ToImage(writeTo, file string) {
 	fileBytes, _ := os.ReadFile(file)
 
-	width := int(math.Sqrt(float64(len(fileBytes))))
-	height := width + (len(fileBytes) - width*width)
-
-	img := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{width, height}})
+	img := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{1000, 1000}})
 	currX := img.Bounds().Min.X
 	currY := img.Bounds().Min.Y
 
