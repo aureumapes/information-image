@@ -23,8 +23,6 @@ func getBytes(img image.Image) []byte {
 	for y := 0; y <= height; y++ {
 		for x := 0; x <= width; x++ {
 			r, _, _, a := img.At(x, y).RGBA()
-			print(int(a))
-			print(" ")
 			if a == 65535 {
 				bytes = append(bytes, byte(r))
 			}
