@@ -7,14 +7,13 @@ import (
 	"os"
 )
 
-func FromImage(writeFrom, file string) {
+func FromImage(writeFrom string) {
 	imageBytes, _ := os.ReadFile(writeFrom)
 	img, _ := png.Decode(bytes.NewReader(imageBytes))
 
 	bytes := getBytes(img)
-	returned := string(bytes)
 
-	print(returned)
+	println(string(bytes))
 }
 
 func getBytes(img image.Image) []byte {

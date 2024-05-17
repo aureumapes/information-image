@@ -1,31 +1,19 @@
 package main
 
 import (
-	"bufio"
 	"information-image/internal"
 	"os"
-	"strings"
-	"runtime"
 )
 
 func main() {
-	if runtime.GOOS == "windows"{
-		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	switch strings.Split(input, "\r\n")[0] {
+	switch os.Args[1] {
 	case "e":
-		internal.ToImage("image.png", "text.txt")
+		internal.ToImage(os.Args[2], os.Args[3])
 		break
 	case "d":
-		internal.FromImage("image.png", "text2.txt")
-	}
-	}else {
-		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	switch strings.Split(input, "\n")[0] {
-	case "e":
-		internal.ToImage("image.png", "text.txt")
+		internal.FromImage(os.Args[2])
 		break
-	case "d":
-		internal.FromImage("image.png", "text2.txt")
-	}
+	default:
+		println("Unknown \"" + os.Args[1] + "\"")
 	}
 }
