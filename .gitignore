@@ -1,3 +1,5 @@
+src/
+pkg/
 .idea
 config.json
 PKGBUILD
